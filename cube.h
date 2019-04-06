@@ -18,6 +18,7 @@ struct wizard {
 
   /* Fill in as required */
   pthread_t wizard_thread;
+  sem_t wizard_status;
 };
   
 struct room {
