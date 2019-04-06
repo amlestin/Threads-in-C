@@ -253,6 +253,12 @@ int interface(void *cube_ref)
 
         /* Start the game */
         // check for 's' or 'c' 
+        if(!strcmp(command, "c")){
+
+        }
+        else if(!strcmp(command,"s")){
+
+        }
 
         /* Fill in */
       }
