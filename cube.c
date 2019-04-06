@@ -67,10 +67,16 @@ int check_winner(struct cube *cube)
   }
 
   // returns 1 if teamB won
-  if (teamA_awake == 0)
+  if (teamA_awake == 0) 
+  {
     return 1;
-  else
+  } 
+  else (teamB_awake)
+  {
     return 0;
+  }
+
+  return -1;
 }
 
 void print_cube(struct cube *cube)
@@ -217,6 +223,16 @@ int interface(void *cube_ref)
   using_history();
   while (1)
   {
+    int winner_flag = check_winner(cube);
+    if (winner_flag == 0) {
+      printf("Team A won the game!\n");
+      return 0;
+    } else if (winner_flag == 1) {
+      printf("Team B won the game!\n");
+      return 0;
+    }
+
+
     line = readline("cube> ");
     if (line == NULL)
       continue;
