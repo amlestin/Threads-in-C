@@ -28,7 +28,7 @@ void kill_wizards(struct wizard *w)
   /* Fill in */
 
   // kills the thread belonging to the current wizard;
-  pthread_cancel(&w->wizard_thread);
+  pthread_cancel(w->wizard_thread);
 
   return;
 }
