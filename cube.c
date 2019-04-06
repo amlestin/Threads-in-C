@@ -546,6 +546,7 @@ void switch_rooms(struct wizard *w, struct room *oldroom, struct room *newroom)
   }
 
   /* Fill in */
+  sem_post(&oldroom->room_occupants);
 
   /* Updates room wizards and determines opponent */
   if (newroom->wizards[0] == NULL)
