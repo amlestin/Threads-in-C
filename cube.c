@@ -623,7 +623,7 @@ int free_wizard(struct wizard *self, struct wizard *other, struct room *room)
 
     /* Fill in */
     sem_post(&other->wizard_status);
-    other->status = 1;
+    other->status = 0;
   }
 
   /* The spell failed */
