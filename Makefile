@@ -1,5 +1,5 @@
 make: cube.c wizard.c
-	gcc -g cube.c wizard.c -lreadline -lhistory -lncurses -lpthread -o cube
+	gcc -g -std=c99 cube.c wizard.c -lreadline -lhistory -lncurses -lpthread -o cube
 
 run:
 	./cube
