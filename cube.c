@@ -30,6 +30,7 @@ kill_wizards(struct wizard *w)
   /* Fill in */
 
 
+
   return;
 }
 
@@ -37,8 +38,34 @@ int
 check_winner(struct cube* cube)
 {
   /* Fill in */
+  int teamA_awake = 0;
+  int teamB_awake = 0;
 
-  return 0;
+  struct room *current_room;
+  struct wizard *current_wizard;
+
+  for (int i = 0; i < cube->size; i++) {
+    for (int j = 0; j < cube->size; i++) {
+      current_room = cube->rooms[i][j];
+
+      for (int k = 0; k < 1; k++) {
+        current_wizard = current_room->wizards[k];
+        if (current_wizard != NULL) {
+          if (current_wizard->team == 'A' && current_wizard->status == 0) {
+            teamA_awake++;
+          } else if (current_wizard->team == 'B' && current_wizard->status == 0) {
+            teamB_awake++;
+          }
+        }
+      }
+    }
+  }
+
+  // returns 1 if teamB won
+  if (teamA_awake == 0)
+    return 1;
+  else
+    return 0;
 }
 
 void 
@@ -353,6 +380,8 @@ main(int argc, char** argv)
   assert(cube);
   cube->size = cube_size;
   cube->game_status = -1;
+  // locks the room until all teams are created
+  sem_init(&cube->cube_lock, 0, 0);
 
   /* Creates the rooms */
   cube->rooms = malloc(sizeof(struct room **) * cube_size);
@@ -376,6 +405,8 @@ main(int argc, char** argv)
 	  room_col[j] = room;
 
 	  /* Fill in */
+    room->room_occupants;
+    sem_init(&room->room_occupants, 0, 1);
 
 	}
       
@@ -509,10 +540,10 @@ switch_rooms(struct wizard *w, struct room *oldroom, struct room* newroom)
       exit(1);
     }
 
-  /* Fill in */
+    /* Fill in */
 
-  /* Updates room wizards and determines opponent */
-  if (newroom->wizards[0] == NULL)
+    /* Updates room wizards and determines opponent */
+    if (newroom->wizards[0] == NULL)
     {
       newroom->wizards[0] = w;
       other = newroom->wizards[1];
