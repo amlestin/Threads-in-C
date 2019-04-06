@@ -252,6 +252,20 @@ int interface(void *cube_ref)
       {
         cube->game_status = 0;
 
+        line = readline("cube> ");
+        if (line == NULL)
+          continue;
+        if (strlen(line) == 0)
+          continue;
+
+        add_history(line);
+
+        i = 0;
+        while (isspace(line[i]))
+          i++;
+
+        command = &line[i];
+
         /* Start the game */
         // check for 's' or 'c' 
         if (!strcmp(command, "c")){ 
