@@ -199,7 +199,7 @@ struct wizard *init_wizard(struct cube *cube, char team, int id)
   }
 
   /* Fill in */
-
+  sem_init(&w->wizard_turn, 0, 0);
   return w;
 }
 

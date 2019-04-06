@@ -26,7 +26,7 @@ wizard_func(void *wizard_descr)
 
 	/* Chooses the new room */
 	newroom = choose_room(self);
-
+	sem_wait(&self->wizard_turn);
 	/* Infinite loop */
 	while (1)
 	{
@@ -113,6 +113,7 @@ wizard_func(void *wizard_descr)
 		oldroom = newroom;
 		newroom = choose_room(self);
 	}
+	sem_post(&self->wizard_turn);
 
 	return NULL;
 }
