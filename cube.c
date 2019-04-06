@@ -587,6 +587,7 @@ int fight_wizard(struct wizard *self, struct wizard *other, struct room *room)
            other->team, other->id);
 
     /* Fill in */
+    other->status = 1;
   }
 
   /* Self freezes and release the lock */
@@ -598,7 +599,8 @@ int fight_wizard(struct wizard *self, struct wizard *other, struct room *room)
            other->team, other->id);
 
     /* Fill in */
-
+    self->status = 1;
+    sem_wait(&self->wizard_status);
     return 1;
   }
   return 0;
@@ -619,6 +621,8 @@ int free_wizard(struct wizard *self, struct wizard *other, struct room *room)
            other->team, other->id);
 
     /* Fill in */
+    sem_post(&other->wizard_status);
+    other->status = 1;
   }
 
   /* The spell failed */
