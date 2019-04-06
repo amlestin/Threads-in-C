@@ -35,7 +35,7 @@ wizard_func(void *wizard_descr)
 		while (1)
 		{
 			printf("Wizard %c%d in room (%d,%d) wants to go to room (%d,%d)\n",
-						 self->team, self->id, oldroom->x, oldroom->y, newroom->x, newroom->y);
+				   self->team, self->id, oldroom->x, oldroom->y, newroom->x, newroom->y);
 
 			if (try_room(self, oldroom, newroom))
 			{
@@ -55,8 +55,8 @@ wizard_func(void *wizard_descr)
 		}
 
 		printf("Wizard %c%d in room (%d,%d) moves to room (%d,%d)\n",
-					 self->team, self->id,
-					 oldroom->x, oldroom->y, newroom->x, newroom->y);
+			   self->team, self->id,
+			   oldroom->x, oldroom->y, newroom->x, newroom->y);
 
 		/* Fill in */
 
@@ -70,8 +70,9 @@ wizard_func(void *wizard_descr)
 		{
 
 			printf("Wizard %c%d in room (%d,%d) finds nobody around \n",
-						 self->team, self->id, newroom->x, newroom->y);
+				   self->team, self->id, newroom->x, newroom->y);
 			/* Fill in */
+			dostuff();
 		}
 		else
 		{
@@ -83,14 +84,14 @@ wizard_func(void *wizard_descr)
 				if (other->status == 0)
 				{
 					printf("Wizard %c%d in room (%d,%d) finds active enemy\n",
-								 self->team, self->id, newroom->x, newroom->y);
+						   self->team, self->id, newroom->x, newroom->y);
 
 					fight_wizard(self, other, newroom);
 				}
 				else
 				{
 					printf("Wizard %c%d in room (%d,%d) finds enemy already frozen\n",
-								 self->team, self->id, newroom->x, newroom->y);
+						   self->team, self->id, newroom->x, newroom->y);
 				}
 			}
 			/* Other is from same team */
