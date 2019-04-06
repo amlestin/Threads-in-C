@@ -253,11 +253,38 @@ int interface(void *cube_ref)
 
         /* Start the game */
         // check for 's' or 'c' 
-        if(!strcmp(command, "c")){
+        if (!strcmp(command, "c")){ 
+          struct wizard *w;
 
-        }
-        else if(!strcmp(command,"s")){
+          for (int a = 0; a < cube->teamA_size; a++) {
+            w = cube->teamA_wizards[a];
+            sem_post(&w->wizard_turn);
+          }
 
+          for (int b = 0; b < cube->teamB_size; b++) {
+            w = cube->teamB_wizards[b];
+            sem_post(&w->wizard_turn);
+          }
+
+        } else if(!strcmp(command,"s")) {
+          int chosen_team = rand() % 2;
+          int chosen_wizard;
+          struct wizard *w;
+
+
+          if (chosen_team == 0) {
+            chosen_wizard = rand() % cube->teamA_size;
+
+            w = cube->teamA_wizards[chosen_wizard];
+
+            sem_post(&w->wizard_turn);
+          } else if (chosen_team == 1) {
+            chosen_wizard = rand() % cube->teamB_size;
+
+            w = cube->teamB_wizards[chosen_wizard];
+
+            sem_post(&w->wizard_turn);
+          }
         }
 
         /* Fill in */
