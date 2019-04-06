@@ -406,7 +406,6 @@ int main(int argc, char **argv)
       room_col[j] = room;
 
       /* Fill in */
-      room->room_occupants;
       sem_init(&room->room_occupants, 0, 1);
     }
 
