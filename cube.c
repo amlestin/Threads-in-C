@@ -27,6 +27,9 @@ void kill_wizards(struct wizard *w)
 {
   /* Fill in */
 
+  // kills the thread belonging to the current wizard;
+  pthread_kill(&w->wizard_thread, 0);
+
   return;
 }
 
@@ -249,6 +252,7 @@ int interface(void *cube_ref)
         cube->game_status = 0;
 
         /* Start the game */
+        // check for 's' or 'c' 
 
         /* Fill in */
       }
@@ -377,7 +381,7 @@ int main(int argc, char **argv)
   assert(cube);
   cube->size = cube_size;
   cube->game_status = -1;
-  // locks the room until all teams are created
+  // locks the cube until all teams are created
   sem_init(&cube->cube_lock, 0, 0);
 
   /* Creates the rooms */
@@ -444,6 +448,13 @@ int main(int argc, char **argv)
     cube->teamB_wizards[i] = wizard_descr;
   }
 
+  // wakes wizard threads to start moving in the cube
+  int num_wizards = teamA_size + teamB_size;
+  while (num_wizards > 0) {
+    sem_post(&cube->cube_lock);
+    num_wizards--;
+  }
+
   /* Fill in */
 
   /* Goes in the interface loop */
@@ -489,8 +500,9 @@ choose_room(struct wizard *w)
 
 int try_room(struct wizard *w, struct room *oldroom, struct room *newroom)
 {
-
   /* Fill in */
+  if (sem_trywait(&newroom->room_occupants) == 0)
+    return 0;
 
   return 1;
 }

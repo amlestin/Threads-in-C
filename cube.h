@@ -17,6 +17,7 @@ struct wizard {
   struct cube *cube; 
 
   /* Fill in as required */
+  pthread_t wizard_thread;
 };
   
 struct room {
