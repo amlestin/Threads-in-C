@@ -387,8 +387,6 @@ int main(int argc, char **argv)
   assert(cube);
   cube->size = cube_size;
   cube->game_status = -1;
-  // locks the cube until all teams are created
-  sem_init(&cube->cube_lock, 0, 0);
 
   /* Creates the rooms */
   cube->rooms = malloc(sizeof(struct room **) * cube_size);
@@ -451,13 +449,6 @@ int main(int argc, char **argv)
       exit(1);
     }
     cube->teamB_wizards[i] = wizard_descr;
-  }
-
-  // wakes wizard threads to start moving in the cube
-  int num_wizards = teamA_size + teamB_size;
-  while (num_wizards > 0) {
-    sem_post(&cube->cube_lock);
-    num_wizards--;
   }
 
   /* Fill in */

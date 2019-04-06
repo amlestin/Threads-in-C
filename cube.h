@@ -43,7 +43,6 @@ struct cube {
   struct room ***rooms;
 
   /* Fill in as required */
-  sem_t cube_lock;
 };
 
 extern void print_wizard(struct wizard *);
