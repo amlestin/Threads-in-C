@@ -3,6 +3,9 @@
 
 #define SOLUTION
 
+#include <semaphore.h>
+#include <pthread.h>
+
 struct cube;
 
 struct wizard {
@@ -22,6 +25,7 @@ struct room {
   struct wizard *wizards[2];
 
   /* Fill in as required */
+  semt_t room_occupants;
 };
 
 struct cube {
@@ -36,6 +40,7 @@ struct cube {
   struct room ***rooms;
 
   /* Fill in as required */
+  semt_t cube_lock;
 };
 
 extern void print_wizard(struct wizard *);
