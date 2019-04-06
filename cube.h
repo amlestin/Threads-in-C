@@ -25,7 +25,7 @@ struct room {
   struct wizard *wizards[2];
 
   /* Fill in as required */
-  semt_t room_occupants;
+  sem_t room_occupants;
 };
 
 struct cube {
@@ -40,7 +40,7 @@ struct cube {
   struct room ***rooms;
 
   /* Fill in as required */
-  semt_t cube_lock;
+  sem_t cube_lock;
 };
 
 extern void print_wizard(struct wizard *);
