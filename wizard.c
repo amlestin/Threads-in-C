@@ -23,11 +23,10 @@ wizard_func(void *wizard_descr)
 	/* Sets starting room */
 	oldroom = cube->rooms[self->x][self->y];
 	assert(oldroom);
-    sem_wait(&oldroom->room_occupants);
+	sem_wait(&oldroom->room_occupants);
 
 	/* Chooses the new room */
 	newroom = choose_room(self);
-//	sem_wait(&self->wizard_turn);
 
 	/* Infinite loop */
 	while (1)
@@ -36,7 +35,8 @@ wizard_func(void *wizard_descr)
 		/* Loops until he's able to get a hold on both the old and new rooms */
 		while (1)
 		{
-			while (self->status || !self->active); // waits until not frozen
+			while (self->status || !self->active)
+				; // waits until not frozen
 			printf("Wizard %c%d in room (%d,%d) wants to go to room (%d,%d)\n",
 				   self->team, self->id, oldroom->x, oldroom->y, newroom->x, newroom->y);
 
@@ -115,11 +115,9 @@ wizard_func(void *wizard_descr)
 
 		oldroom = newroom;
 		newroom = choose_room(self);
-//		sem_wait(&self->wizard_turn);
-        if (cube->game_status == 2)
-            self->active = 0;
+		if (cube->game_status == 2)
+			self->active = 0;
 	}
-	
 
 	return NULL;
 }

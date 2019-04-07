@@ -67,10 +67,10 @@ int check_winner(struct cube *cube)
   }
 
   // returns 1 if teamB won
-  if (teamA_awake == 0) 
+  if (teamA_awake == 0)
   {
     return 1;
-  } 
+  }
   else if (teamB_awake)
   {
     return 0;
@@ -269,60 +269,6 @@ int interface(void *cube_ref)
       else
       {
         cube->game_status = 0;
-/*
-        line = readline("cube> ");
-        if (line == NULL)
-          continue;
-        if (strlen(line) == 0)
-          continue;
-
-        add_history(line);
-
-        i = 0;
-        while (isspace(line[i]))
-          i++;
-
-        command = &line[i];
-*/
-
-        /* Start the game */
-        // check for 's' or 'c' 
-        /*
-        if (!strcmp(command, "c")){ 
-          struct wizard *w;
-
-          for (int a = 0; a < cube->teamA_size; a++) {
-            w = cube->teamA_wizards[a];
-            sem_post(&w->wizard_turn);
-          }
-
-          for (int b = 0; b < cube->teamB_size; b++) {
-            w = cube->teamB_wizards[b];
-            sem_post(&w->wizard_turn);
-          }
-
-        } else if(!strcmp(command,"s")) {
-          int chosen_team = rand() % 2;
-          int chosen_wizard;
-          struct wizard *w;
-
-
-          if (chosen_team == 0) {
-            chosen_wizard = rand() % cube->teamA_size;
-
-            w = cube->teamA_wizards[chosen_wizard];
-
-            sem_post(&w->wizard_turn);
-          } else if (chosen_team == 1) {
-            chosen_wizard = rand() % cube->teamB_size;
-
-            w = cube->teamB_wizards[chosen_wizard];
-
-            sem_post(&w->wizard_turn);
-          }
-        }
-        */
-
         /* Fill in */
       }
     }
@@ -331,50 +277,52 @@ int interface(void *cube_ref)
       /* Stop the game */
       return 1;
     }
-        // check for 's' or 'c' 
-        else if (!strcmp(command, "c")){ 
-            cube->game_status = 3;
-          struct wizard *w;
+    // check for 's' or 'c'
+    else if (!strcmp(command, "c"))
+    {
+      cube->game_status = 3;
+      struct wizard *w;
 
-          for (int a = 0; a < cube->teamA_size; a++) {
-            w = cube->teamA_wizards[a];
-//            sem_post(&w->wizard_turn);
-              w->active = 1;
-          }
+      for (int a = 0; a < cube->teamA_size; a++)
+      {
+        w = cube->teamA_wizards[a];
+        w->active = 1;
+      }
 
-          for (int b = 0; b < cube->teamB_size; b++) {
-            w = cube->teamB_wizards[b];
-//            sem_post(&w->wizard_turn);
-              w->active = 1;
-          }
+      for (int b = 0; b < cube->teamB_size; b++)
+      {
+        w = cube->teamB_wizards[b];
+        w->active = 1;
+      }
+    }
+    else if (!strcmp(command, "s"))
+    {
+      cube->game_status = 2;
+      int chosen_team = rand() % 2;
+      int chosen_wizard;
+      struct wizard *w;
 
-        } else if(!strcmp(command,"s")) {
-            cube->game_status = 2;
-          int chosen_team = rand() % 2;
-          int chosen_wizard;
-          struct wizard *w;
-
-
-          if (chosen_team == 0) {
-            do {
-                chosen_wizard = rand() % cube->teamA_size;
-                w = cube->teamA_wizards[chosen_wizard];
-            } while (w->status == 1);
-            w->active = 1;
-          } else if (chosen_team == 1) {
-            do {
-                chosen_wizard = rand() % cube->teamB_size;
-                w = cube->teamB_wizards[chosen_wizard];
-            } while (w->status == 1);
-            w->active = 1;
-          }
-// DEBUG ONLY
-          printf("Single step mode team %d w %d\n", chosen_team, chosen_wizard);
-        }
-
-
-
-
+      if (chosen_team == 0)
+      {
+        do
+        {
+          chosen_wizard = rand() % cube->teamA_size;
+          w = cube->teamA_wizards[chosen_wizard];
+        } while (w->status == 1);
+        w->active = 1;
+      }
+      else if (chosen_team == 1)
+      {
+        do
+        {
+          chosen_wizard = rand() % cube->teamB_size;
+          w = cube->teamB_wizards[chosen_wizard];
+        } while (w->status == 1);
+        w->active = 1;
+      }
+      // DEBUG ONLY
+      printf("Single step mode team %d w %d\n", chosen_team, chosen_wizard);
+    }
     else
     {
       fprintf(stderr, "unknown command %s\n", command);
@@ -665,8 +613,8 @@ void switch_rooms(struct wizard *w, struct room *oldroom, struct room *newroom)
   }
   else /* This should never happen */
   {
-      printf("Wizard %c%d in room (%d,%d) gets in a room already filled with people!\n",
-   w->team, w->id, newroom->x, newroom->y);
+    printf("Wizard %c%d in room (%d,%d) gets in a room already filled with people!\n",
+           w->team, w->id, newroom->x, newroom->y);
     print_cube(w->cube);
     exit(1);
   }
