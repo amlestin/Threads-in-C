@@ -34,6 +34,7 @@ wizard_func(void *wizard_descr)
 		/* Loops until he's able to get a hold on both the old and new rooms */
 		while (1)
 		{
+			while (self->status); // waits until not frozen
 			printf("Wizard %c%d in room (%d,%d) wants to go to room (%d,%d)\n",
 				   self->team, self->id, oldroom->x, oldroom->y, newroom->x, newroom->y);
 

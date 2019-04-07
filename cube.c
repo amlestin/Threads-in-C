@@ -205,7 +205,8 @@ struct wizard *init_wizard(struct cube *cube, char team, int id)
   }
 
   /* Fill in */
-  sem_init(&w->wizard_turn, 0, 0);
+  sem_init(&w->wizard_turn, 0, 0); // wizards created frozen
+  sem_wait(&cube->rooms[x][y]->room_occupants); // wizard occupies room
   pthread_create(&w->wizard_thread, NULL, wizard_func, w);
   return w;
 }
@@ -349,6 +350,7 @@ int interface(void *cube_ref)
           int chosen_wizard;
           struct wizard *w;
 
+// DEBUG ONLY
 
           if (chosen_team == 0) {
             chosen_wizard = rand() % cube->teamA_size;
@@ -363,6 +365,7 @@ int interface(void *cube_ref)
 
             sem_post(&w->wizard_turn);
           }
+          printf("Single step mode team %d w %d\n", chosen_team, chosen_wizard);
         }
 
 
@@ -659,8 +662,8 @@ void switch_rooms(struct wizard *w, struct room *oldroom, struct room *newroom)
   }
   else /* This should never happen */
   {
-    printf("Wizard %c%d in room (%d,%d) gets in a room already filled with people!\n",
-           w->team, w->id, newroom->x, newroom->y);
+      printf("Wizard %c%d in room (%d,%d) gets in a room already filled with people!\n",
+   w->team, w->id, newroom->x, newroom->y);
     print_cube(w->cube);
     exit(1);
   }
