@@ -268,7 +268,7 @@ int interface(void *cube_ref)
       else
       {
         cube->game_status = 0;
-
+/*
         line = readline("cube> ");
         if (line == NULL)
           continue;
@@ -282,6 +282,7 @@ int interface(void *cube_ref)
           i++;
 
         command = &line[i];
+*/
 
         /* Start the game */
         // check for 's' or 'c' 
