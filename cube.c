@@ -622,7 +622,7 @@ int fight_wizard(struct wizard *self, struct wizard *other, struct room *room)
            other->team, other->id);
 
     /* Fill in */
-    self->status = 1;
+//    self->status = 1;
 //    sem_wait(&self->wizard_status);
     return 1;
   }
@@ -642,6 +642,10 @@ int fight_wizard(struct wizard *self, struct wizard *other, struct room *room)
       kill_wizards(self->cube->teamB_wizards[i]);
     }
   }
+
+  if (self->status == 1) // self became frozen by enemy
+    return 1;
+
   return 0;
 }
 
