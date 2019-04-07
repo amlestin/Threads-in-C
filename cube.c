@@ -145,6 +145,7 @@ struct wizard *init_wizard(struct cube *cube, char team, int id)
   w->team = team;
   w->id = id;
   w->status = 0;
+  w->active = 0;
   w->cube = cube;
 
   x = rand() % cube->size;
@@ -332,19 +333,23 @@ int interface(void *cube_ref)
     }
         // check for 's' or 'c' 
         else if (!strcmp(command, "c")){ 
+            cube->game_status = 3;
           struct wizard *w;
 
           for (int a = 0; a < cube->teamA_size; a++) {
             w = cube->teamA_wizards[a];
-            sem_post(&w->wizard_turn);
+//            sem_post(&w->wizard_turn);
+              w->active = 1;
           }
 
           for (int b = 0; b < cube->teamB_size; b++) {
             w = cube->teamB_wizards[b];
-            sem_post(&w->wizard_turn);
+//            sem_post(&w->wizard_turn);
+              w->active = 1;
           }
 
         } else if(!strcmp(command,"s")) {
+            cube->game_status = 2;
           int chosen_team = rand() % 2;
           int chosen_wizard;
           struct wizard *w;
@@ -356,13 +361,15 @@ int interface(void *cube_ref)
 
             w = cube->teamA_wizards[chosen_wizard];
 
-            sem_post(&w->wizard_turn);
+            w->active = 1;
+//            sem_post(&w->wizard_turn);
           } else if (chosen_team == 1) {
             chosen_wizard = rand() % cube->teamB_size;
 
             w = cube->teamB_wizards[chosen_wizard];
 
-            sem_post(&w->wizard_turn);
+//            sem_post(&w->wizard_turn);
+            w->active = 1;
           }
           printf("Single step mode team %d w %d\n", chosen_team, chosen_wizard);
         }
@@ -513,7 +520,7 @@ int main(int argc, char **argv)
       room_col[j] = room;
 
       /* Fill in */
-      sem_init(&room->room_occupants, 0, 1);
+      sem_init(&room->room_occupants, 0, 2);
     }
 
     cube->rooms[i] = room_col;

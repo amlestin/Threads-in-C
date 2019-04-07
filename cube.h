@@ -20,6 +20,7 @@ struct wizard {
   pthread_t wizard_thread;
   sem_t wizard_status;
   sem_t wizard_turn;
+  int active;
 };
   
 struct room {
