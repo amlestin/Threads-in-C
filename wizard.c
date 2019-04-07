@@ -112,8 +112,9 @@ wizard_func(void *wizard_descr)
 
 		oldroom = newroom;
 		newroom = choose_room(self);
+		sem_wait(&self->wizard_turn);
 	}
-	sem_post(&self->wizard_turn);
+	
 
 	return NULL;
 }
