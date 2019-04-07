@@ -44,7 +44,7 @@ int check_winner(struct cube *cube)
 
   for (int i = 0; i < cube->size; i++)
   {
-    for (int j = 0; j < cube->size; i++)
+    for (int j = 0; j < cube->size; j++)
     {
       current_room = cube->rooms[i][j];
 
