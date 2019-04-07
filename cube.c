@@ -71,7 +71,7 @@ int check_winner(struct cube *cube)
   {
     return 1;
   }
-  else if (teamB_awake)
+  else if (teamB_awake == 0)
   {
     return 0;
   }
