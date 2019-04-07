@@ -630,7 +630,7 @@ int fight_wizard(struct wizard *self, struct wizard *other, struct room *room)
 
     /* Fill in */
     other->status = 1;
-    sem_wait(&other->wizard_status);
+//    sem_wait(&other->wizard_status);
   }
 
   /* Self freezes and release the lock */
@@ -643,7 +643,7 @@ int fight_wizard(struct wizard *self, struct wizard *other, struct room *room)
 
     /* Fill in */
     self->status = 1;
-    sem_wait(&self->wizard_status);
+//    sem_wait(&self->wizard_status);
     return 1;
   }
   int winner_flag = check_winner(self->cube);
