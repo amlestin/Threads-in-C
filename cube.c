@@ -206,7 +206,6 @@ struct wizard *init_wizard(struct cube *cube, char team, int id)
 
   /* Fill in */
   sem_init(&w->wizard_turn, 0, 0); // wizards created frozen
-  sem_wait(&cube->rooms[x][y]->room_occupants); // wizard occupies room
   pthread_create(&w->wizard_thread, NULL, wizard_func, w);
   return w;
 }
