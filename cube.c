@@ -224,16 +224,6 @@ int interface(void *cube_ref)
   using_history();
   while (1)
   {
-    /*
-    int winner_flag = check_winner(cube);
-    if (winner_flag == 0) {
-      printf("Team A won the game!\n");
-      return 0;
-    } else if (winner_flag == 1) {
-      printf("Team B won the game!\n");
-      return 0;
-    }
-    */
 
     line = readline("cube> ");
     if (line == NULL)
@@ -655,6 +645,22 @@ int fight_wizard(struct wizard *self, struct wizard *other, struct room *room)
     self->status = 1;
     sem_wait(&self->wizard_status);
     return 1;
+  }
+  int winner_flag = check_winner(self->cube);
+  if (winner_flag == 0) {
+    printf("Team A won the game!\n");
+    return 0;
+  } else if (winner_flag == 1) {
+    printf("Team B won the game!\n");
+    return 0;
+  } // kill all wizards now that we have won the game
+  if(winner_flag != -1){
+    for(int i = 0; self->cube->teamA_size; i++){
+      kill_wizards(self->cube->teamA_wizards[i]);
+    }
+    for(int i = 0; self->cube->teamB_size; i++){
+      kill_wizards(self->cube->teamB_wizards[i]);
+    }
   }
   return 0;
 }
