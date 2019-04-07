@@ -655,10 +655,10 @@ int fight_wizard(struct wizard *self, struct wizard *other, struct room *room)
     return 0;
   } // kill all wizards now that we have won the game
   if(winner_flag != -1){
-    for(int i = 0; self->cube->teamA_size; i++){
+    for(int i = 0; i < self->cube->teamA_size; i++){
       kill_wizards(self->cube->teamA_wizards[i]);
     }
-    for(int i = 0; self->cube->teamB_size; i++){
+    for(int i = 0; i < self->cube->teamB_size; i++){
       kill_wizards(self->cube->teamB_wizards[i]);
     }
   }
