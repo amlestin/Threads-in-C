@@ -38,12 +38,12 @@ int check_winner(struct cube *cube)
   /* Fill in */
   int teamA_awake = 0;
   int teamB_awake = 0;
-  struct wizard *current_wizard;
+
   for(int i = 0; i < cube->teamA_size; i++){
-    teamA_awake += cube->teamA_wizards[i]->active;
+    teamA_awake += cube->teamA_wizards[i]->status;
   }
   for(int i = 0; i < cube->teamB_size; i++){
-    teamB_awake += cube->teamB_wizards[i]->active;
+    teamB_awake += cube->teamB_wizards[i]->status;
   }
 
   // returns 1 if teamB won
