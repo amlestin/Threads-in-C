@@ -354,26 +354,23 @@ int interface(void *cube_ref)
           int chosen_wizard;
           struct wizard *w;
 
-// DEBUG ONLY
 
           if (chosen_team == 0) {
-            chosen_wizard = rand() % cube->teamA_size;
-
-            w = cube->teamA_wizards[chosen_wizard];
-
+            do {
+                chosen_wizard = rand() % cube->teamA_size;
+                w = cube->teamA_wizards[chosen_wizard];
+            } while (w->status == 1);
             w->active = 1;
-//            sem_post(&w->wizard_turn);
           } else if (chosen_team == 1) {
-            chosen_wizard = rand() % cube->teamB_size;
-
-            w = cube->teamB_wizards[chosen_wizard];
-
-//            sem_post(&w->wizard_turn);
+            do {
+                chosen_wizard = rand() % cube->teamB_size;
+                w = cube->teamB_wizards[chosen_wizard];
+            } while (w->status == 1);
             w->active = 1;
           }
+// DEBUG ONLY
           printf("Single step mode team %d w %d\n", chosen_team, chosen_wizard);
         }
-
 
 
 
