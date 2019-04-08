@@ -260,7 +260,8 @@ int interface(void *cube_ref)
 
     if (!strcmp(command, "exit"))
     {
-      kill_all_wizards(cube);
+      if (!cube->threads_killed)
+        kill_all_wizards(cube);
       return 0;
     }
     else if (!strcmp(command, "show"))
@@ -286,7 +287,8 @@ int interface(void *cube_ref)
     else if (!strcmp(command, "stop"))
     {
       /* Stop the game */
-      kill_all_wizards(cube);
+      if (!cube->threads_killed)
+        kill_all_wizards(cube);
       return 1;
     }
     // check for 's' or 'c'
