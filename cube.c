@@ -49,11 +49,11 @@ int check_winner(struct cube *cube)
   // returns 1 if teamB won
   if (teamA_awake == 0)
   {
-    return 0;
+    return 1;
   }
   else if (teamB_awake == 0)
   {
-    return 1;
+    return 0;
   }
 
   return -1;
