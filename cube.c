@@ -209,6 +209,19 @@ struct wizard *init_wizard(struct cube *cube, char team, int id)
   return w;
 }
 
+void kill_all_wizards(struct cube *cube) {
+    printf("Starting to kill wizards\n");
+
+    for(int i = 0; i < cube->teamA_size; i++)
+      kill_wizards(cube->teamA_wizards[i]);
+
+    for(int i = 0; i < cube->teamB_size; i++)
+      kill_wizards(cube->teamB_wizards[i]);
+    
+    printf("Finished killing wizards\n");
+    cube->threads_killed = 1;
+}
+
 int interface(void *cube_ref)
 {
   struct cube *cube;
@@ -222,17 +235,8 @@ int interface(void *cube_ref)
   using_history();
   while (1)
   {
-    if(!cube->threads_killed && cube->game_status == 1){
-      printf("Starting to kill wizards\n");
-      for(int i = 0; i < cube->teamA_size; i++){
-        kill_wizards(cube->teamA_wizards[i]);
-      }
-      for(int i = 0; i < cube->teamB_size; i++){
-        kill_wizards(cube->teamB_wizards[i]);
-      }
-      printf("Finished killing wizards\n");
-      cube->threads_killed = 1;
-    }
+    if(!cube->threads_killed && cube->game_status == 1)
+      kill_all_wizards(cube);
 
     line = readline("cube> ");
     if (line == NULL)
@@ -250,6 +254,7 @@ int interface(void *cube_ref)
 
     if (!strcmp(command, "exit"))
     {
+      kill_all_wizards(cube);
       return 0;
     }
     else if (!strcmp(command, "show"))
@@ -275,6 +280,7 @@ int interface(void *cube_ref)
     else if (!strcmp(command, "stop"))
     {
       /* Stop the game */
+      kill_all_wizards(cube);
       return 1;
     }
     // check for 's' or 'c'
