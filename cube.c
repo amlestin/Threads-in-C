@@ -40,19 +40,23 @@ int check_winner(struct cube *cube)
   int teamB_awake = 0;
 
   for(int i = 0; i < cube->teamA_size; i++){
-    teamA_awake += !cube->teamA_wizards[i]->status;
+    if(cube->teamA_wizards[i]->status == 0)
+      teamA_awake += 1;
   }
   for(int i = 0; i < cube->teamB_size; i++){
-    teamB_awake += !cube->teamB_wizards[i]->status;
+    if(cube->teamB_wizards[i]->status == 0)
+      teamB_awake += 1;
   }
 
   // returns 1 if teamB won
   if (teamA_awake == 0)
   {
+    cube->game_status = 1;
     return 1;
   }
   else if (teamB_awake == 0)
   {
+    cube->game_status = 1;
     return 0;
   }
 
@@ -218,6 +222,14 @@ int interface(void *cube_ref)
       i++;
 
     command = &line[i];
+    if(cube->game_status == 1){
+      for(int i = 0; i < cube->teamA_size; i++){
+        kill_wizards(cube->teamA_wizards[i]);
+      }
+      for(int i = 0; i < cube->teamB_size; i++){
+        kill_wizards(cube->teamB_wizards[i]);
+      }
+    }
     if (!strcmp(command, "exit"))
     {
       return 0;
@@ -631,14 +643,6 @@ int fight_wizard(struct wizard *self, struct wizard *other, struct room *room)
     printf("Team A won the game!\n");
   } else if (winner_flag == 1) {
     printf("Team B won the game!\n");
-  } // kill all wizards now that we have won the game
-  if(winner_flag != -1){
-    for(int i = 0; i < self->cube->teamA_size; i++){
-      kill_wizards(self->cube->teamA_wizards[i]);
-    }
-    for(int i = 0; i < self->cube->teamB_size; i++){
-      kill_wizards(self->cube->teamB_wizards[i]);
-    }
   }
 
   if (self->status == 1) // self became frozen by enemy
