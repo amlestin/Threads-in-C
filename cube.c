@@ -33,12 +33,15 @@ void kill_wizards(struct wizard *w)
   return;
 }
 
-void make_cube_inactive(struct cube *cube) {
+void make_cube_inactive(struct cube *cube)
+{
 
-  for(int i = 0; i < cube->teamA_size; i++){
+  for (int i = 0; i < cube->teamA_size; i++)
+  {
     cube->teamA_wizards[i]->active = 0;
   }
-  for(int i = 0; i < cube->teamB_size; i++){
+  for (int i = 0; i < cube->teamB_size; i++)
+  {
     cube->teamB_wizards[i]->active = 0;
   }
 }
@@ -49,12 +52,14 @@ int check_winner(struct cube *cube)
   int teamA_awake = 0;
   int teamB_awake = 0;
 
-  for(int i = 0; i < cube->teamA_size; i++){
-    if(cube->teamA_wizards[i]->status == 0)
+  for (int i = 0; i < cube->teamA_size; i++)
+  {
+    if (cube->teamA_wizards[i]->status == 0)
       teamA_awake += 1;
   }
-  for(int i = 0; i < cube->teamB_size; i++){
-    if(cube->teamB_wizards[i]->status == 0)
+  for (int i = 0; i < cube->teamB_size; i++)
+  {
+    if (cube->teamB_wizards[i]->status == 0)
       teamB_awake += 1;
   }
 
@@ -209,17 +214,18 @@ struct wizard *init_wizard(struct cube *cube, char team, int id)
   return w;
 }
 
-void kill_all_wizards(struct cube *cube) {
-    printf("Starting to kill wizards\n");
+void kill_all_wizards(struct cube *cube)
+{
+  printf("Starting to kill wizards\n");
 
-    for(int i = 0; i < cube->teamA_size; i++)
-      kill_wizards(cube->teamA_wizards[i]);
+  for (int i = 0; i < cube->teamA_size; i++)
+    kill_wizards(cube->teamA_wizards[i]);
 
-    for(int i = 0; i < cube->teamB_size; i++)
-      kill_wizards(cube->teamB_wizards[i]);
-    
-    printf("Finished killing wizards\n");
-    cube->threads_killed = 1;
+  for (int i = 0; i < cube->teamB_size; i++)
+    kill_wizards(cube->teamB_wizards[i]);
+
+  printf("Finished killing wizards\n");
+  cube->threads_killed = 1;
 }
 
 int interface(void *cube_ref)
@@ -235,7 +241,7 @@ int interface(void *cube_ref)
   using_history();
   while (1)
   {
-    if(!cube->threads_killed && cube->game_status == 1)
+    if (!cube->threads_killed && cube->game_status == 1)
       kill_all_wizards(cube);
 
     line = readline("cube> ");
@@ -287,7 +293,7 @@ int interface(void *cube_ref)
     else if (!strcmp(command, "c"))
     {
       if (cube->game_status == 1)
-          continue;
+        continue;
 
       cube->game_status = 3;
       struct wizard *w;
@@ -308,7 +314,7 @@ int interface(void *cube_ref)
     {
 
       if (cube->game_status == 1)
-          continue;
+        continue;
 
       cube->game_status = 2;
       int chosen_team = rand() % 2;
@@ -334,7 +340,7 @@ int interface(void *cube_ref)
         w->active = 1;
       }
       // DEBUG ONLY
-//      printf("Single step mode team %d w %d\n", chosen_team, chosen_wizard);
+      //      printf("Single step mode team %d w %d\n", chosen_team, chosen_wizard);
     }
     else
     {
@@ -654,7 +660,7 @@ int fight_wizard(struct wizard *self, struct wizard *other, struct room *room)
 
     /* Fill in */
     other->status = 1;
-//    sem_wait(&other->wizard_status);
+    //    sem_wait(&other->wizard_status);
   }
 
   /* Self freezes and release the lock */
@@ -667,13 +673,16 @@ int fight_wizard(struct wizard *self, struct wizard *other, struct room *room)
 
     /* Fill in */
     self->status = 1;
-//    sem_wait(&self->wizard_status);
-//    return 1;
+    //    sem_wait(&self->wizard_status);
+    //    return 1;
   }
   int winner_flag = check_winner(self->cube);
-  if (winner_flag == 0) {
+  if (winner_flag == 0)
+  {
     printf("Team A won the game!\n");
-  } else if (winner_flag == 1) {
+  }
+  else if (winner_flag == 1)
+  {
     printf("Team B won the game!\n");
   }
 
@@ -700,11 +709,13 @@ int free_wizard(struct wizard *self, struct wizard *other, struct room *room)
     /* Fill in */
     sem_post(&other->wizard_status);
     other->status = 0;
-  } else {
-  /* The spell failed */
-  printf("Wizard %c%d in room (%d,%d) fails to unfreeze friend %c%d\n",
-         self->team, self->id, room->x, room->y,
-         other->team, other->id);
-
+  }
+  else
+  {
+    /* The spell failed */
+    printf("Wizard %c%d in room (%d,%d) fails to unfreeze friend %c%d\n",
+           self->team, self->id, room->x, room->y,
+           other->team, other->id);
+  }
   return 0;
 }
