@@ -629,10 +629,8 @@ int fight_wizard(struct wizard *self, struct wizard *other, struct room *room)
   int winner_flag = check_winner(self->cube);
   if (winner_flag == 0) {
     printf("Team A won the game!\n");
-    return 0;
   } else if (winner_flag == 1) {
     printf("Team B won the game!\n");
-    return 0;
   } // kill all wizards now that we have won the game
   if(winner_flag != -1){
     for(int i = 0; i < self->cube->teamA_size; i++){
