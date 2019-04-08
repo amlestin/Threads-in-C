@@ -44,6 +44,7 @@ struct cube {
   struct room ***rooms;
 
   /* Fill in as required */
+  int threads_killed;
 };
 
 extern void print_wizard(struct wizard *);

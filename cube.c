@@ -26,7 +26,7 @@ void command_line_usage()
 void kill_wizards(struct wizard *w)
 {
   /* Fill in */
-
+  printf("Attempting to kill wizard %d from team %d\n");
   // kills the thread belonging to the current wizard;
   pthread_cancel(w->wizard_thread);
 
@@ -51,11 +51,13 @@ int check_winner(struct cube *cube)
   // returns 1 if teamB won
   if (teamA_awake == 0)
   {
+    printf("Changing game status\n");
     cube->game_status = 1;
     return 1;
   }
   else if (teamB_awake == 0)
   {
+    printf("Changing game status\n");
     cube->game_status = 1;
     return 0;
   }
@@ -208,6 +210,17 @@ int interface(void *cube_ref)
   using_history();
   while (1)
   {
+    if(!cube->threads_killed && cube->game_status == 1){
+      printf("Starting to kill wizards\n");
+      for(int i = 0; i < cube->teamA_size; i++){
+        kill_wizards(cube->teamA_wizards[i]);
+      }
+      for(int i = 0; i < cube->teamB_size; i++){
+        kill_wizards(cube->teamB_wizards[i]);
+      }
+      printf("Finished killing wizards\n");
+      cube->threads_killed = 1;
+    }
 
     line = readline("cube> ");
     if (line == NULL)
@@ -222,14 +235,7 @@ int interface(void *cube_ref)
       i++;
 
     command = &line[i];
-    if(cube->game_status == 1){
-      for(int i = 0; i < cube->teamA_size; i++){
-        kill_wizards(cube->teamA_wizards[i]);
-      }
-      for(int i = 0; i < cube->teamB_size; i++){
-        kill_wizards(cube->teamB_wizards[i]);
-      }
-    }
+
     if (!strcmp(command, "exit"))
     {
       return 0;
@@ -424,6 +430,7 @@ int main(int argc, char **argv)
   assert(cube);
   cube->size = cube_size;
   cube->game_status = -1;
+  cube->threads_killed = 0;
 
   /* Creates the rooms */
   cube->rooms = malloc(sizeof(struct room **) * cube_size);

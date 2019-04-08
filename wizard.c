@@ -115,7 +115,7 @@ wizard_func(void *wizard_descr)
 
 		oldroom = newroom;
 		newroom = choose_room(self);
-		if (cube->game_status == 2)
+		if (cube->game_status == 2 || cube->game_status == 1)
 			self->active = 0;
 	}
 
