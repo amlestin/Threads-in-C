@@ -9,6 +9,10 @@
 void *
 wizard_func(void *wizard_descr)
 {
+//    int *old_state;
+//    pthread_setcancelstate(PTHREAD_CANCEL_ASYNCHRONOUS, old_state);
+//    pthread_setcancelstate(PTHREAD_CANCEL_ENABLE, old_state);
+
 	struct cube *cube;
 	struct room *newroom;
 	struct room *oldroom;
@@ -35,8 +39,11 @@ wizard_func(void *wizard_descr)
 		/* Loops until he's able to get a hold on both the old and new rooms */
 		while (1)
 		{
-			while (self->status || !self->active)
-				; // waits until not frozen
+            // waits until not frozen
+			while (self->status || !self->active) {
+                if (cube->game_status == 1)
+                    pthread_testcancel();
+            }
 			printf("Wizard %c%d in room (%d,%d) wants to go to room (%d,%d)\n",
 				   self->team, self->id, oldroom->x, oldroom->y, newroom->x, newroom->y);
 
@@ -117,6 +124,11 @@ wizard_func(void *wizard_descr)
 		newroom = choose_room(self);
 		if (cube->game_status == 2 || cube->game_status == 1)
 			self->active = 0;
+
+        if (cube->game_status ==1){
+            pthread_testcancel();
+            break;
+        }
 	}
 
 	return NULL;

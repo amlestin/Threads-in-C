@@ -26,11 +26,21 @@ void command_line_usage()
 void kill_wizards(struct wizard *w)
 {
   /* Fill in */
-  printf("Attempting to kill wizard %d from team %d\n");
+  printf("Attempting to kill wizard %d from team %c\n", w->id, w->team);
   // kills the thread belonging to the current wizard;
   pthread_cancel(w->wizard_thread);
 
   return;
+}
+
+void make_cube_inactive(struct cube *cube) {
+
+  for(int i = 0; i < cube->teamA_size; i++){
+    cube->teamA_wizards[i]->active = 0;
+  }
+  for(int i = 0; i < cube->teamB_size; i++){
+    cube->teamB_wizards[i]->active = 0;
+  }
 }
 
 int check_winner(struct cube *cube)
@@ -53,12 +63,14 @@ int check_winner(struct cube *cube)
   {
     printf("Changing game status\n");
     cube->game_status = 1;
+    make_cube_inactive(cube);
     return 1;
   }
   else if (teamB_awake == 0)
   {
     printf("Changing game status\n");
     cube->game_status = 1;
+    make_cube_inactive(cube);
     return 0;
   }
 
@@ -268,6 +280,9 @@ int interface(void *cube_ref)
     // check for 's' or 'c'
     else if (!strcmp(command, "c"))
     {
+      if (cube->game_status == 1)
+          continue;
+
       cube->game_status = 3;
       struct wizard *w;
 
@@ -285,6 +300,10 @@ int interface(void *cube_ref)
     }
     else if (!strcmp(command, "s"))
     {
+
+      if (cube->game_status == 1)
+          continue;
+
       cube->game_status = 2;
       int chosen_team = rand() % 2;
       int chosen_wizard;
@@ -641,9 +660,9 @@ int fight_wizard(struct wizard *self, struct wizard *other, struct room *room)
            other->team, other->id);
 
     /* Fill in */
-//    self->status = 1;
+    self->status = 1;
 //    sem_wait(&self->wizard_status);
-    return 1;
+//    return 1;
   }
   int winner_flag = check_winner(self->cube);
   if (winner_flag == 0) {
