@@ -334,7 +334,7 @@ int interface(void *cube_ref)
         w->active = 1;
       }
       // DEBUG ONLY
-      printf("Single step mode team %d w %d\n", chosen_team, chosen_wizard);
+//      printf("Single step mode team %d w %d\n", chosen_team, chosen_wizard);
     }
     else
     {
@@ -700,8 +700,7 @@ int free_wizard(struct wizard *self, struct wizard *other, struct room *room)
     /* Fill in */
     sem_post(&other->wizard_status);
     other->status = 0;
-  }
-
+  } else {
   /* The spell failed */
   printf("Wizard %c%d in room (%d,%d) fails to unfreeze friend %c%d\n",
          self->team, self->id, room->x, room->y,
