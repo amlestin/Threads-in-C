@@ -294,8 +294,6 @@ int interface(void *cube_ref)
     // check for 's' or 'c'
     else if (!strcmp(command, "c"))
     {
-      if (cube->game_status != 0)
-        continue;
       if (cube->game_status == 1)
         continue;
 
@@ -316,8 +314,6 @@ int interface(void *cube_ref)
     }
     else if (!strcmp(command, "s"))
     {
-      if (cube->game_status != 0)
-        continue;
       if (cube->game_status == 1)
         continue;
 
