@@ -244,7 +244,11 @@ int interface(void *cube_ref)
     if (!cube->threads_killed && cube->game_status == 1)
       kill_all_wizards(cube);
 
-    line = readline("cube> ");
+    if (cube->game_status != 3) {
+        printf("calling readline\n");
+        line = readline("cube> ");
+        printf("line is (%s)\n", line);
+    }
     if (line == NULL)
       continue;
     if (strlen(line) == 0)
@@ -340,6 +344,8 @@ int interface(void *cube_ref)
         } while (w->status == 1);
         w->active = 1;
       }
+
+      while(w->active == 1);
       // DEBUG ONLY
       //      printf("Single step mode team %d w %d\n", chosen_team, chosen_wizard);
     }
