@@ -23,28 +23,6 @@ void command_line_usage()
   fprintf(stderr, "-size <size of cube> -teamA <size of team> -teamB <size of team> -seed <seed value>\n");
 }
 
-void kill_all_then_die(struct wizard *self) {
-  struct wizard *victim;
-
-  struct cube *cube = self->cube;
-
-  for (int i = 0; i < cube->teamA_size; i++)
-  {
-    victim = cube->teamA_wizards[i];
-    if (victim != self)
-        kill_wizards(victim);
-  }
-
-  for (int i = 0; i < cube->teamB_size; i++)
-  {
-    victim = cube->teamB_wizards[i];
-    if (victim != self)
-        kill_wizards(victim);
-  }
-  cube->threads_killed = 1;
-  pthread_exit(NULL);
-}
-
 void kill_wizards(struct wizard *w)
 {
   /* Fill in */
@@ -88,18 +66,16 @@ int check_winner(struct cube *cube)
   // returns 1 if teamB won
   if (teamA_awake == 0)
   {
-    kill_all_then_die(cube->teamA_wizards[0]);
-    make_cube_inactive(cube);
     printf("Changing game status\n");
     cube->game_status = 1;
+    make_cube_inactive(cube);
     return 1;
   }
   else if (teamB_awake == 0)
   {
-    kill_all_then_die(cube->teamA_wizards[0]);
-    make_cube_inactive(cube);
     printf("Changing game status\n");
     cube->game_status = 1;
+    make_cube_inactive(cube);
     return 0;
   }
 
@@ -265,8 +241,8 @@ int interface(void *cube_ref)
   using_history();
   while (1)
   {
-//    if (!cube->threads_killed && cube->game_status == 1)
-//      kill_all_wizards(cube);
+    if (!cube->threads_killed && cube->game_status == 1)
+      kill_all_wizards(cube);
 
     if (cube->game_status != 3) {
         printf("calling readline\n");
