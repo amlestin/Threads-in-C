@@ -50,6 +50,7 @@ wizard_func(void *wizard_descr)
 
 			if (try_room(self, oldroom, newroom))
 			{
+                printf("Request denied, room locked!\n");
 				/* Waits a random amount of time */
 				dostuff();
 
