@@ -42,7 +42,7 @@ wizard_func(void *wizard_descr)
 			// waits until not frozen
 			while (self->status || !self->active)
 			{
-				if (cube->game_status == 1)
+//				if (cube->game_status == 1)
 					pthread_testcancel();
 			}
 			printf("Wizard %c%d in room (%d,%d) wants to go to room (%d,%d)\n",
@@ -127,11 +127,7 @@ wizard_func(void *wizard_descr)
 		if (cube->game_status == 2 || cube->game_status == 1)
 			self->active = 0;
 
-		if (cube->game_status == 1)
-		{
-			pthread_testcancel();
-			break;
-		}
+        pthread_testcancel();
 	}
 
 	return NULL;
