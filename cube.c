@@ -26,7 +26,6 @@ void command_line_usage()
 void kill_wizards(struct wizard *w)
 {
   /* Fill in */
-  printf("Attempting to kill wizard %d from team %c\n", w->id, w->team);
   // kills the thread belonging to the current wizard;
   pthread_cancel(w->wizard_thread);
 
@@ -66,14 +65,12 @@ int check_winner(struct cube *cube)
   // returns 1 if teamB won
   if (teamA_awake == 0)
   {
-    printf("Changing game status\n");
     cube->game_status = 1;
     make_cube_inactive(cube);
     return 1;
   }
   else if (teamB_awake == 0)
   {
-    printf("Changing game status\n");
     cube->game_status = 1;
     make_cube_inactive(cube);
     return 0;
@@ -215,15 +212,12 @@ struct wizard *init_wizard(struct cube *cube, char team, int id)
 
 void kill_all_wizards(struct cube *cube)
 {
-  printf("Starting to kill wizards\n");
-
   for (int i = 0; i < cube->teamA_size; i++)
     kill_wizards(cube->teamA_wizards[i]);
 
   for (int i = 0; i < cube->teamB_size; i++)
     kill_wizards(cube->teamB_wizards[i]);
 
-  printf("Finished killing wizards\n");
   cube->threads_killed = 1;
 }
 
@@ -244,9 +238,7 @@ int interface(void *cube_ref)
       kill_all_wizards(cube);
 
     if (cube->game_status != 3) {
-        printf("calling readline\n");
         line = readline("cube> ");
-        printf("line is (%s)\n", line);
     }
     if (line == NULL)
       continue;
