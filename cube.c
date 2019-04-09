@@ -209,7 +209,6 @@ struct wizard *init_wizard(struct cube *cube, char team, int id)
   }
 
   /* Fill in */
-  sem_init(&w->wizard_turn, 0, 0); // wizards created frozen
   pthread_create(&w->wizard_thread, NULL, wizard_func, w);
   return w;
 }
@@ -346,8 +345,6 @@ int interface(void *cube_ref)
       }
 
       while(w->active == 1);
-      // DEBUG ONLY
-      //      printf("Single step mode team %d w %d\n", chosen_team, chosen_wizard);
     }
     else
     {
@@ -667,7 +664,6 @@ int fight_wizard(struct wizard *self, struct wizard *other, struct room *room)
 
     /* Fill in */
     other->status = 1;
-    //    sem_wait(&other->wizard_status);
   }
 
   /* Self freezes and release the lock */
@@ -680,8 +676,6 @@ int fight_wizard(struct wizard *self, struct wizard *other, struct room *room)
 
     /* Fill in */
     self->status = 1;
-    //    sem_wait(&self->wizard_status);
-    //    return 1;
   }
   int winner_flag = check_winner(self->cube);
   if (winner_flag == 0)
@@ -714,7 +708,6 @@ int free_wizard(struct wizard *self, struct wizard *other, struct room *room)
            other->team, other->id);
 
     /* Fill in */
-    sem_post(&other->wizard_status);
     other->status = 0;
   }
   else

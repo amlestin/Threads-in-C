@@ -9,10 +9,6 @@
 void *
 wizard_func(void *wizard_descr)
 {
-	//    int *old_state;
-	//    pthread_setcancelstate(PTHREAD_CANCEL_ASYNCHRONOUS, old_state);
-	//    pthread_setcancelstate(PTHREAD_CANCEL_ENABLE, old_state);
-
 	struct cube *cube;
 	struct room *newroom;
 	struct room *oldroom;
